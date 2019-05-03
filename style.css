@@ -8,6 +8,16 @@ html, body {
     font-family:'Noto Sans', Segoe UI, Tahoma, sans-serif;
 }
 
+:root {
+    --indigo: #252643;
+    --indigo-light: #484A74;
+    --blue: #3471FA;
+    --blue-light-1: #6B7FB5;
+    --gray-light-1: #909BB1;
+    --gray-light-2: #ABB1C4;
+    --gray-light-3: rgb(235, 236, 240);
+}
+
 a {
     text-decoration: none;
 }
@@ -27,23 +37,34 @@ ul{
 .list-group {
     background: #fff;
     width: 400px;
-    height: 650px;
     border-radius: 10px;
     margin: 0 auto;
+    overflow: hidden;
     box-shadow: 6px 8px 0px rgb(204, 187, 129);
 }
 .list-group ul li {
     display: flex;
     align-items: center;
     color: #444;
-    border-bottom: 1px solid rgb(216, 204, 192);
+    border-bottom: 1px solid var(--gray-light-3);
+    transition: all 0.3s ease-out;
+}
+.checked {
+    color: #aaa;
+    background: var(--gray-light-3);
+}
+.list-group ul li.checked > div {
+    text-decoration: line-through;
 }
 .checkbox-wrapper, .item-title {
-    padding: 15px;
+    padding: 25px 15px;
+}
+.checkbox-wrapper {
+    margin-right: 5px;
 }
 .item-title {
     flex: 1;
-    border-left: 1px solid rgb(216, 204, 192);
+    border-left: 2px solid var(--gray-light-3);
 }
 input[type=checkbox] {
     position: relative;
@@ -54,31 +75,32 @@ input[type=checkbox]:before {
     content: "";
     display: block;
     position: absolute;
-    width: 16px;
-    height: 16px;
+    width: 13px;
+    height: 13px;
     top: 0;
     left: 0;
-    border: 2px solid #aaa;
+    border: 2px solid var(--gray-light-3);
     border-radius: 3px;
     background-color: #fff;
+    /* box-shadow: 0px 2px 5px rgb(207, 202, 197); */
 }
 input[type=checkbox]:checked:before {
     content: "";
     display: block;
     position: absolute;
-    width: 16px;
-    height: 16px;
+    width: 13px;
+    height: 13px;
     top: 0;
     left: 0;
     border: 2px solid #248888;
     border-radius: 3px;
-    background-color: #248888;
+    background-color: var(--blue);
 }
 input[type=checkbox]:checked:after {
     content: "";
     display: block;
     width: 4px;
-    height: 10px;
+    height: 7px;
     border: solid #fff;
     border-width: 0 2px 2px 0;
     -webkit-transform: rotate(45deg);
@@ -86,5 +108,5 @@ input[type=checkbox]:checked:after {
     transform: rotate(45deg);
     position: absolute;
     top: 2px;
-    left: 7px;
+    left: 6px;
 }
