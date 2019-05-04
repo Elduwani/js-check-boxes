@@ -13,9 +13,13 @@ html, body {
     --indigo-light: #484A74;
     --blue: #3471FA;
     --blue-light-1: #6B7FB5;
+    --gray: rgb(117, 117, 117);
     --gray-light-1: #909BB1;
-    --gray-light-2: #ABB1C4;
+    --gray-light-2: rgb(215, 217, 226);
     --gray-light-3: rgb(235, 236, 240);
+    --width: 500px;
+    --radius: 10px;
+    --font-size: 18px;
 }
 
 a {
@@ -27,17 +31,19 @@ ul{
     padding: 0;
     margin: 0;
 }
-
 .wrapper {
     width: 100%;
     height: 100%;
     background: #ffd6a6;
+}
+.container{
+    width: var(--width);
+    margin: 0 auto;
     padding-top: 100px;
 }
 .list-group {
     background: #fff;
-    width: 400px;
-    border-radius: 10px;
+    border-radius: var(--radius);
     margin: 0 auto;
     overflow: hidden;
     box-shadow: 6px 8px 0px rgb(204, 187, 129);
@@ -46,18 +52,23 @@ ul{
     display: flex;
     align-items: center;
     color: #444;
+    font-size: var(--font-size);
     border-bottom: 1px solid var(--gray-light-3);
     transition: all 0.3s ease-out;
 }
-.checked {
+.list-group .checked {
     color: #aaa;
     background: var(--gray-light-3);
+    border-color: var(--gray-light-2);
+}
+.list-group .checked, .list-group .checked .item-title {
+    border-color: var(--gray-light-2);
 }
 .list-group ul li.checked > div {
     text-decoration: line-through;
 }
 .checkbox-wrapper, .item-title {
-    padding: 25px 15px;
+    padding: 25px;
 }
 .checkbox-wrapper {
     margin-right: 5px;
@@ -109,4 +120,38 @@ input[type=checkbox]:checked:after {
     position: absolute;
     top: 2px;
     left: 6px;
+}
+
+section form {
+    margin-top: 50px;
+    background: #fff;
+    box-sizing: border-box;
+    display: flex;
+}
+form{
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+form input {
+    padding: 15px 25px;
+    font-size: var(--font-size);
+}
+form input.input-field {
+    flex: 1;
+    border: 1px solid var(--gray-light-2);
+    color: var(--gray);
+    border: none;
+}
+input.input-field:focus{
+    outline: none;
+    border: none;
+}
+input.input-field::placeholder{
+    color: var(--gray-light-1)
+}
+form input.submit {
+    border: none;
+    background: var(--blue);
+    color: white;
+    cursor: pointer;
 }

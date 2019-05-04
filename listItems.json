@@ -1,32 +1,26 @@
 [
   {
     "id": 1,
-    "title": "First item on the list",
-    "completed": false
+    "title": "First item on the list"
   },
   {
     "id": 2,
-    "title": "Remember to share on Twitter",
-    "completed": false
+    "title": "Remember to share on Twitter"
   },
   {
     "id": 3,
-    "title": "Clear out all schedule for tomorrow",
-    "completed": false
+    "title": "Clear out all schedule for tomorrow"
   },
   {
     "id": 4,
-    "title": "Push source files to github repo",
-    "completed": false
+    "title": "Push source files to github repo"
   },
   {
     "id": 5,
-    "title": "Update code to ES9 standards",
-    "completed": false
+    "title": "Update code to ES9 standards"
   },
   {
     "id": 6,
-    "title": "Pay outstanding bills",
-    "completed": false
+    "title": "Pay outstanding bills"
   }
 ]
