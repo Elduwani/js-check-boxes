@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "title": "First item on the list",
+    "completed": false
+  },
+  {
+    "id": 2,
+    "title": "Remember to share on Twitter",
+    "completed": false
+  },
+  {
+    "id": 3,
+    "title": "Clear out all schedule for tomorrow",
+    "completed": false
+  },
+  {
+    "id": 4,
+    "title": "Push source files to github repo",
+    "completed": false
+  },
+  {
+    "id": 5,
+    "title": "Update code to ES9 standards",
+    "completed": false
+  },
+  {
+    "id": 6,
+    "title": "Pay outstanding bills",
+    "completed": false
+  }
+]
