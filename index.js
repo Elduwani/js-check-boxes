@@ -19,6 +19,16 @@ function getData() {
 }
 
 function showData(x) {
+
+}
+
+function displayItems(x) {
+  if (!x) {
+    return
+  }
+  newarray = x;
+  // console.log("Displaying from LocalStorage")
+  listParent.innerHTML = "";
   if (!x) { return }
 
   x.forEach((x, i) => {
@@ -42,13 +52,6 @@ function showData(x) {
   deleteButton.forEach((btn) => btn.addEventListener("click", handleDelete))
 }
 
-function displayItems(data) {
-  newarray = data;
-  // console.log("Displaying from LocalStorage")
-  listParent.innerHTML = "";
-  showData(data)
-}
-
 if (local && local.length > 0) {
   // console.log("Local Storage exists")
   displayItems(local)
@@ -62,7 +65,7 @@ function saveToLocal(x) {
 }
 
 //Only bluff calling below function to set global variables holding data from Promises
-showData();
+displayItems();
 
 //Handle Check
 let lastChecked;
@@ -98,6 +101,10 @@ function handleCheck(e) {
       const box = tag.querySelector('input[type=checkbox]')
       box.checked ? tag.classList.add("checked") : tag.classList.remove("checked")
     })
+
+    //display number of tasks
+
+
   }
 }
 
@@ -107,7 +114,7 @@ function handleSubmit(e) {
   const content = form.querySelector("input[type = text]").value //fails if assigned outside this function
 
   if (content === "" || content === undefined) {
-    return
+    return //Do nothing is form input is empty
   }
 
   local.push(
@@ -134,7 +141,23 @@ function handleDelete() {
 function showDeleteButton() {
   this.querySelector(".delete").classList.toggle("show")
 }
-
 function hideDeleteButton() {
   this.querySelector(".delete").classList.remove("show")
+}
+
+document.querySelector(".mark-all").addEventListener("click", markAll)
+
+function markAll() {
+  this.classList.toggle("unmark")
+
+  if (!this.classList.contains("unmark")) {
+    this.textContent = "Mark All";
+    checkboxes.forEach(checkbox => checkbox.checked = false)
+    listTags.forEach(tag => tag.classList.remove("checked"))
+    // this.classList.remove("unmark")
+  } else {
+    this.textContent = "Unmark All";
+    checkboxes.forEach(checkbox => checkbox.checked = true)
+    listTags.forEach(tag => tag.classList.add("checked"))
+  }
 }
