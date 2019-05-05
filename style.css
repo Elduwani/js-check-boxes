@@ -19,9 +19,9 @@ html, body {
     --gray-light-1: #909BB1;
     --gray-light-2: rgb(215, 217, 226);
     --gray-light-3: rgb(235, 236, 240);
-    --width: 650px;
+    --width: 500px;
     --radius: 10px;
-    --font-size: 18px;
+    --font-size: 16px;
 }
 
 a {
