@@ -14,15 +14,22 @@ function showContent(x) {
     listItem.innerHTML =
       `
         <div class="checkbox-wrapper"><input type="checkbox" id="checkbox" /></div>
-        <div class="item-title">${x.title}</div>
+        <p class="item-title">${x.title}</p>
         <div class="delete" data-index=${i}>X</div>
       `
     listParent.appendChild(listItem)
   })
-  checkboxes = listParent.querySelectorAll("input[type=checkbox]")
-  deleteButton = listParent.querySelectorAll(".delete")
-  checkboxes.forEach(checkbox => checkbox.addEventListener("click", handleCheck))
+
+  const listTags = listParent.querySelectorAll('li')
+  listTags.forEach(tag => tag.addEventListener("mouseenter", showDeleteButton))
+  listTags.forEach(tag => tag.addEventListener("mouseleave", hideDeleteButton))
+
+  const deleteButton = listParent.querySelectorAll(".delete")
   deleteButton.forEach((btn) => btn.addEventListener("click", handleDelete))
+
+  checkboxes = listParent.querySelectorAll("input[type=checkbox]")
+  checkboxes.forEach(checkbox => checkbox.addEventListener("click", handleCheck))
+
 }
 
 function displayItems(data) {
@@ -36,19 +43,19 @@ function getData() {
   return fetch("listItems.json")
     .then(response => response.json())
     .then(data => {
-      let local = JSON.parse(window.localStorage.getItem("Items"))
-      if (!local || !local.length || local === undefined) {
-        saveToLocal(data)
-      }
+      saveToLocal(data)
       newarray = data;
       displayItems(data)
     })
 }
 
-function createNewItem(x, i) {
-  return
+if (local && local.length > 0) {
+  console.log("Local Storage exists")
+  displayItems(local)
+} else {
+  getData()
+  console.log("Local Storage does not exist")
 }
-getData()
 
 function saveToLocal(x) {
   window.localStorage.setItem("Items", JSON.stringify(x))
@@ -69,11 +76,9 @@ function handleCheck(e) {
       if (checkbox === this || checkbox === lastChecked) {
         inBetween = !inBetween
       }
-
       if (inBetween) {
         checkbox.checked = true
       }
-
       if (checkbox.checked) {
         checkbox.parentElement.parentElement.classList.add("checked")
       } else {
@@ -87,12 +92,11 @@ function handleCheck(e) {
 
 function handleSubmit(e) {
   e.preventDefault()
-  const content = form.querySelector("input[type = text]").value //fails if assigned outside this function
-  console.log(content)
   let local = JSON.parse(window.localStorage.getItem("Items"))
+  const content = form.querySelector("input[type = text]").value //fails if assigned outside this function
   local.push(
     {
-      id: (local[local.length - 1].id + 1),
+      id: local.length ? (local[local.length - 1].id + 1) : 1,
       title: content
     }
   )
@@ -108,4 +112,13 @@ function handleDelete() {
   newarray.splice(this.dataset.index, 1)
   saveToLocal(newarray)
   displayItems(newarray)
+}
+
+function showDeleteButton() {
+  this.querySelector(".delete").classList.toggle("show")
+  console.log("entered", this)
+}
+
+function hideDeleteButton() {
+  this.querySelector(".delete").classList.remove("show")
 }

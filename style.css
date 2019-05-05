@@ -19,7 +19,7 @@ html, body {
     --gray-light-1: #909BB1;
     --gray-light-2: rgb(215, 217, 226);
     --gray-light-3: rgb(235, 236, 240);
-    --width: 500px;
+    --width: 650px;
     --radius: 10px;
     --font-size: 18px;
 }
@@ -58,7 +58,7 @@ ul{
     color: #444;
     font-size: var(--font-size);
     border-bottom: 1px solid var(--gray-light-3);
-    transition: all 0.3s ease-out;
+    transition: all 0.2s ease-out;
 }
 .list-group .checked {
     color: #aaa;
@@ -68,7 +68,7 @@ ul{
 .list-group .checked, .list-group .checked .item-title {
     border-color: var(--gray-light-2);
 }
-.list-group ul li.checked > div {
+.list-group ul li.checked > p {
     text-decoration: line-through;
 }
 .checkbox-wrapper, .item-title {
@@ -78,12 +78,14 @@ ul{
     margin-right: 5px;
 }
 .item-title {
+    margin: 0;
     flex: 1;
     border-left: 2px solid var(--gray-light-3);
-}
-.list-group ul li.checked > div.delete{
-    text-decoration: none;
-    visibility: visible; 
+    word-wrap: break-word;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+
 }
 .delete {
     padding: 20px;
@@ -92,7 +94,9 @@ ul{
     font-weight: 700;
     cursor: pointer;
     visibility: hidden;
-    /* background: var(--indigo) */
+}
+.show {
+    visibility: visible;
 }
 input[type=checkbox] {
     position: relative;
@@ -147,6 +151,7 @@ section form {
 }
 form{
     border-radius: var(--radius);
+    box-shadow: 2px 24px 20px #e9c398;
     overflow: hidden;
 }
 form input {
