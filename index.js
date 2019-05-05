@@ -75,7 +75,7 @@ function handleCheck(e) {
     // this.classList.toggle("checked")
     let inBetween = false
 
-    if (e.shiftKey && checkbox.checked) {
+    if (e.shiftKey && checkbox.checked && lastChecked !== checkbox) {
       //const checkboxes is set inside showData() function when items are created at runtime. 
       //Had to call the function outside of itself to actually set the var
       checkboxes.forEach(box => {
