@@ -1,50 +1,61 @@
 const listParent = document.getElementById("list-items")
-let checkboxes;
-let array;
-let fileContent;
 
-//On page load, get items
-fetchItems()
-displayItems(fileContent)
+function displayItems(data) {
 
-function createNewItem(x) {
+  let local = JSON.parse(window.localStorage.getItem("Items"))
+  console.log("Local:", local)
+
+  if (local === undefined || !local.length) {
+    //Display from file
+    console.log("Displaying from File")
+
+    data.forEach((data, i) => {
+      const listItem = document.createElement("li")
+      listItem.innerHTML = createNewItem(data, i)
+      listParent.appendChild(listItem)
+    })
+
+  } else {
+    //Display from localStorage
+    console.log("Displaying from LocalStorage")
+    listParent.innerHTML = "";
+
+    local.forEach((local, i) => {
+      const listItem = document.createElement("li")
+      listItem.innerHTML = createNewItem(local, i)
+      listParent.appendChild(listItem)
+    })
+  }
+
+}
+
+function getData(url) {
+  return fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      let local = JSON.parse(window.localStorage.getItem("Items"))
+      if (!local || !local.length || local === undefined) {
+        saveToLocal(data)
+      }
+      displayItems(data)
+    })
+}
+
+function createNewItem(x, i) {
   return `
-    <div class="checkbox-wrapper"><input type="checkbox" id="checkbox" onclick=${handleCheck} />
+    <div class="checkbox-wrapper"><input type="checkbox" id="checkbox" />
     </div><div class="item-title">${x.title}</div>
-    <div class="delete" id=${x.id}>X</div>
+    <div class="delete" data-index=${i}>X</div>
   `
 }
+getData("listItems.json")
 
-function fetchItems() {
-  fetch("listItems.json")
-    .then(res => res.json())
-    .then(data => {
-      console.log(data)
-      return fileContent = Array.from(data);
-    })
-    .catch(err => console.error(err))
-  console.log("fileContent inside fetch:", fileContent)
-}
-
-function save(x) {
+function saveToLocal(x) {
   window.localStorage.setItem("Items", JSON.stringify(x))
 }
 
-function displayItems(data) {
-  console.log("fileContent inside displayItems:", data)
-  // return data.forEach(data => {
-  //   const listChild = document.createElement("li")
-  //   newItem = createNewItem(data)
-  //   console.log("New Item", newItem)
-  //   listChild.innerHTML = newItem;
-  //   listParent.appendChild(listChild)
-  //   // checkboxes = listParent.querySelectorAll(".checkbox-wrapper input[type=checkbox]")
-  // })
-  // // checkboxes.forEach(checkbox => checkbox.addEventListener("click", handleCheck))
-
-}
-
 //Handle Check
+let checkboxes;
 let lastChecked;
 
 function handleCheck(e) {
@@ -75,12 +86,22 @@ function handleCheck(e) {
   lastChecked = this
 }
 
+//get form element and add to list
+const form = document.getElementById("form")
+form.addEventListener("submit", handleSubmit)
+
 function handleSubmit(e) {
   e.preventDefault()
-  //get form element and add to list
-  const form = document.getElementById("form")
-  form.addEventListener("submit", handleSubmit)
-  const content = form.querySelector("input[type = text]").value
-
+  const content = form.querySelector("input[type = text]").value //fails if assigned outside this function
   console.log(content)
+  let local = JSON.parse(window.localStorage.getItem("Items"))
+  local.push(
+    {
+      id: (local[local.length - 1].id + 1),
+      title: content
+    }
+  )
+  saveToLocal(local)
+  displayItems(local)
+  this.reset()
 }
