@@ -1,56 +1,47 @@
 const listParent = document.getElementById("list-items")
 let checkboxes;
-savedData = JSON.parse(window.localStorage.getItem("Items"))
+let array;
+let fileContent;
 
 //On page load, get items
-getItems()
+fetchItems()
+displayItems(fileContent)
 
-function getItems() {
-  //reset all items to empty - otherwise function will render duplicate items
-  listParent.innerHTML = '';
+function createNewItem(x) {
+  return `
+    <div class="checkbox-wrapper"><input type="checkbox" id="checkbox" onclick=${handleCheck} />
+    </div><div class="item-title">${x.title}</div>
+    <div class="delete" id=${x.id}>X</div>
+  `
+}
 
+function fetchItems() {
   fetch("listItems.json")
     .then(res => res.json())
-    .then(items => {
-
-      if (savedData.length) {
-
-        //Read from LocalStorage
-        console.log("Outputting from Local Storage")
-
-        savedData.forEach(data => {
-          const listChild = document.createElement("li")
-          const newItem =
-            `<div class="checkbox-wrapper"><input type="checkbox" name=${data.id} id="checkbox" />
-            </div><div class="item-title">${data.title}</div>`
-          listChild.innerHTML = newItem;
-          listParent.appendChild(listChild)
-          checkboxes = listParent.querySelectorAll(".checkbox-wrapper input[type=checkbox]")
-        })
-
-      } else {
-
-        //Read from file
-        console.log("Outputting from JSON file")
-
-        //save to LocalStorage
-        save(items);
-
-        items.forEach(item => {
-          const listChild = document.createElement("li")
-          const newItem =
-            `<div class="checkbox-wrapper"><input type="checkbox" name=${data.id} id="checkbox" />
-            </div><div class="item-title">${data.title}</div>`
-
-          // listChild.setAttribute('draggable', 'true')
-          listChild.innerHTML = newItem
-          listParent.appendChild(listChild)
-          checkboxes = listParent.querySelectorAll(".checkbox-wrapper input[type=checkbox]")
-        })
-      }
-      checkboxes.forEach(checkbox => checkbox.addEventListener("click", handleCheck))
+    .then(data => {
+      console.log(data)
+      return fileContent = Array.from(data);
     })
     .catch(err => console.error(err))
+  console.log("fileContent inside fetch:", fileContent)
+}
+
+function save(x) {
+  window.localStorage.setItem("Items", JSON.stringify(x))
+}
+
+function displayItems(data) {
+  console.log("fileContent inside displayItems:", data)
+  // return data.forEach(data => {
+  //   const listChild = document.createElement("li")
+  //   newItem = createNewItem(data)
+  //   console.log("New Item", newItem)
+  //   listChild.innerHTML = newItem;
+  //   listParent.appendChild(listChild)
+  //   // checkboxes = listParent.querySelectorAll(".checkbox-wrapper input[type=checkbox]")
+  // })
+  // // checkboxes.forEach(checkbox => checkbox.addEventListener("click", handleCheck))
+
 }
 
 //Handle Check
@@ -84,25 +75,12 @@ function handleCheck(e) {
   lastChecked = this
 }
 
-//get form element and add to list
-const form = document.getElementById("form")
-form.addEventListener("submit", handleSubmit)
-const formInput = form.querySelector("input[type = text]")
-
 function handleSubmit(e) {
   e.preventDefault()
-  newArray = savedData;
+  //get form element and add to list
+  const form = document.getElementById("form")
+  form.addEventListener("submit", handleSubmit)
+  const content = form.querySelector("input[type = text]").value
 
-  //Add new entry to the LocalStorage array
-  newArray.push({ id: (savedData[savedData.length - 1].id + 1), title: formInput.value })
-  save(newArray)
-
-  formInput.value = '';
-
-  // Render items again
-  getItems()
-}
-
-function save(x) {
-  window.localStorage.setItem("Items", JSON.stringify(x))
+  console.log(content)
 }
