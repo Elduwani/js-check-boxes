@@ -1,55 +1,54 @@
+let local = JSON.parse(window.localStorage.getItem("Items"))
+let newarray = [];
+
+//get form element and add to list
+const form = document.getElementById("form")
+form.addEventListener("submit", handleSubmit)
+
 const listParent = document.getElementById("list-items")
 let checkboxes;
 
 function showContent(x) {
   x.forEach((x, i) => {
     const listItem = document.createElement("li")
-    listItem.innerHTML = createNewItem(x, i)
+    listItem.innerHTML =
+      `
+        <div class="checkbox-wrapper"><input type="checkbox" id="checkbox" /></div>
+        <div class="item-title">${x.title}</div>
+        <div class="delete" data-index=${i}>X</div>
+      `
     listParent.appendChild(listItem)
   })
   checkboxes = listParent.querySelectorAll("input[type=checkbox]")
+  deleteButton = listParent.querySelectorAll(".delete")
   checkboxes.forEach(checkbox => checkbox.addEventListener("click", handleCheck))
+  deleteButton.forEach((btn) => btn.addEventListener("click", handleDelete))
 }
 
 function displayItems(data) {
-
-  let local = JSON.parse(window.localStorage.getItem("Items"))
-  console.log("Local:", local)
-
-  if (local === undefined || !local.length) {
-    //Display from file
-    console.log("Displaying from File")
-    showContent(data)
-
-  } else {
-    //Display from localStorage
-    console.log("Displaying from LocalStorage")
-    listParent.innerHTML = "";
-    showContent(local)
-  }
-
+  newarray = data;
+  console.log("Displaying from LocalStorage")
+  listParent.innerHTML = "";
+  showContent(data)
 }
 
-function getData(url) {
-  return fetch(url)
+function getData() {
+  return fetch("listItems.json")
     .then(response => response.json())
     .then(data => {
       let local = JSON.parse(window.localStorage.getItem("Items"))
       if (!local || !local.length || local === undefined) {
         saveToLocal(data)
       }
+      newarray = data;
       displayItems(data)
     })
 }
 
 function createNewItem(x, i) {
-  return `
-    <div class="checkbox-wrapper"><input type="checkbox" id="checkbox" />
-    </div><div class="item-title">${x.title}</div>
-    <div class="delete" data-index=${i}>X</div>
-  `
+  return
 }
-getData("listItems.json")
+getData()
 
 function saveToLocal(x) {
   window.localStorage.setItem("Items", JSON.stringify(x))
@@ -86,10 +85,6 @@ function handleCheck(e) {
   lastChecked = this
 }
 
-//get form element and add to list
-const form = document.getElementById("form")
-form.addEventListener("submit", handleSubmit)
-
 function handleSubmit(e) {
   e.preventDefault()
   const content = form.querySelector("input[type = text]").value //fails if assigned outside this function
@@ -104,4 +99,13 @@ function handleSubmit(e) {
   saveToLocal(local)
   displayItems(local)
   this.reset()
+}
+
+function handleDelete() {
+  if (local && local.length) {
+    newarray = local;
+  }
+  newarray.splice(this.dataset.index, 1)
+  saveToLocal(newarray)
+  displayItems(newarray)
 }
