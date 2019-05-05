@@ -1,4 +1,15 @@
 const listParent = document.getElementById("list-items")
+let checkboxes;
+
+function showContent(x) {
+  x.forEach((x, i) => {
+    const listItem = document.createElement("li")
+    listItem.innerHTML = createNewItem(x, i)
+    listParent.appendChild(listItem)
+  })
+  checkboxes = listParent.querySelectorAll("input[type=checkbox]")
+  checkboxes.forEach(checkbox => checkbox.addEventListener("click", handleCheck))
+}
 
 function displayItems(data) {
 
@@ -8,23 +19,13 @@ function displayItems(data) {
   if (local === undefined || !local.length) {
     //Display from file
     console.log("Displaying from File")
-
-    data.forEach((data, i) => {
-      const listItem = document.createElement("li")
-      listItem.innerHTML = createNewItem(data, i)
-      listParent.appendChild(listItem)
-    })
+    showContent(data)
 
   } else {
     //Display from localStorage
     console.log("Displaying from LocalStorage")
     listParent.innerHTML = "";
-
-    local.forEach((local, i) => {
-      const listItem = document.createElement("li")
-      listItem.innerHTML = createNewItem(local, i)
-      listParent.appendChild(listItem)
-    })
+    showContent(local)
   }
 
 }
@@ -55,7 +56,6 @@ function saveToLocal(x) {
 }
 
 //Handle Check
-let checkboxes;
 let lastChecked;
 
 function handleCheck(e) {
