@@ -18,18 +18,13 @@ function getData() {
     })
 }
 
-function showData(x) {
-
-}
-
 function displayItems(x) {
   if (!x) {
-    return
+    return //if params is empty, do nothing
   }
+
   newarray = x;
-  // console.log("Displaying from LocalStorage")
   listParent.innerHTML = "";
-  if (!x) { return }
 
   x.forEach((x, i) => {
     const listItem = document.createElement("li")
@@ -64,9 +59,6 @@ if (local && local.length > 0) {
 function saveToLocal(x) {
   window.localStorage.setItem("Items", JSON.stringify(x))
 }
-
-//Only bluff calling below function to set global variables holding data from Promises
-displayItems();
 
 //Handle Check
 let lastChecked;
