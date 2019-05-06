@@ -52,6 +52,7 @@ function displayItems(x) {
   deleteButton.forEach((btn) => btn.addEventListener("click", handleDelete))
 }
 
+//Display from Localstorage if exists
 if (local && local.length > 0) {
   // console.log("Local Storage exists")
   displayItems(local)
